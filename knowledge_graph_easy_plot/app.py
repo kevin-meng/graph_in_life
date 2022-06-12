@@ -9,8 +9,10 @@ from PIL import Image
 
 st.set_page_config(page_title="Knowledge Graph", page_icon="💗")  # , layout="wide"
 
+# print(os.getwcd)
+# image = Image.open("./data/logo-new.png")
+image = Image.open("logo-new.png")
 
-image = Image.open("./data/logo-new.png")
 st.sidebar.image(image,caption="",use_column_width='always')
 
 st.sidebar.write("#### Upload your own data")
@@ -21,7 +23,8 @@ else:
     nodes,edges = extract_graph_data(uploaded_file)
 
 downloader =  st.sidebar.expander('Download Sample Data')
-with open('./data/marvel.xlsx', 'rb') as f:
+# with open('./data/marvel.xlsx', 'rb') as f:
+with open('marvel.xlsx', 'rb') as f:
     downloader.download_button('Download', f, file_name='marvel.xlsx')
 downloader.write("Source cod: [Github](https://github.com/kevin-meng/graph_in_life)")
 
