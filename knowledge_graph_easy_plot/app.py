@@ -6,7 +6,7 @@ from streamlit_agraph import Config, Edge, Node, agraph
 from data_process import extract_graph_data
 from PIL import Image
 
-
+print(os.listdir())
 st.set_page_config(page_title="Knowledge Graph", page_icon="💗")  # , layout="wide"
 
 # print(os.getwcd)
