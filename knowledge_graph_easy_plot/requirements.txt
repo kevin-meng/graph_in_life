@@ -2,3 +2,4 @@ pandas
 plotly
 streamlit
 streamlit-agraph
+openpyxl
