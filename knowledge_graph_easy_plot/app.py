@@ -1,15 +1,16 @@
-import os
+import os,sys
 import streamlit as st
 import json 
 import pandas as pd
 from streamlit_agraph import Config, Edge, Node, agraph
+
+sys.path.append("./knowledge_graph_easy_plot")
 from data_process import extract_graph_data
 from PIL import Image
 
-print(os.listdir())
+# print(os.listdir())
 st.set_page_config(page_title="Knowledge Graph", page_icon="💗")  # , layout="wide"
 
-# print(os.getwcd)
 image = Image.open("./data/logo-new.png")
 # image = Image.open("logo-new.png")
 
