@@ -4,7 +4,7 @@ import json
 import pandas as pd
 from streamlit_agraph import Config, Edge, Node, agraph
 
-# sys.path.append("./knowledge_graph_easy_plot/")
+sys.path.append("./knowledge_graph_easy_plot/")
 from data_process import extract_graph_data
 from utils import (set_node_value, set_link_value )
 from language import chinese_dict
