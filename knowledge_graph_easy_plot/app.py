@@ -147,6 +147,8 @@ config = Config(width=eval(width),
 return_value = agraph(nodes=graph_nodes, 
                       edges=graph_links, 
                       config=config)
-
+st.sidebar.write(f"#### 赞赏 / Donate")
+image_donate = Image.open("./data/donate.jpeg")
+st.sidebar.image(image_donate,caption="",use_column_width='always')
 st.markdown("---")
 
