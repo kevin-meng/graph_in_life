@@ -4,9 +4,10 @@ import json
 import pandas as pd
 from streamlit_agraph import Config, Edge, Node, agraph
 
-sys.path.append("./knowledge_graph_easy_plot")
+# sys.path.append("./knowledge_graph_easy_plot/")
 from data_process import extract_graph_data
-from utils import (set_node_value, set_link_value, load_pickle)
+from utils import (set_node_value, set_link_value )
+from language import chinese_dict
 from PIL import Image
 
 
@@ -16,20 +17,25 @@ image = Image.open("./data/logo-new.png")
 
 st.sidebar.image(image,caption="",use_column_width='always')
 
+lang = st.sidebar.checkbox('中文',True) 
+if lang:
+    lang_dict = chinese_dict
+else:
+    lang_dict = {k:k for k,v in chinese_dict.items()}
 
-with  st.sidebar.expander('Graph Settings',expanded=False): # expand default
-    width = st.text_input("width",value=800,help=' the width of the graph')
-    height = st.text_input("gravheightity",value=800, help="the height  of the graph")
+with  st.sidebar.expander(lang_dict['Graph Settings'],expanded=False): # expand default
+    width = st.text_input(lang_dict["width"],value=800,help=' the width of the graph')
+    height = st.text_input(lang_dict["height"],value=800, help="the height  of the graph")
     # directed =  st.selectbox("directed",options=["False","True"], help="if directed")
 
 
-with  st.sidebar.expander('Node Settings',expanded=False): # expand default
-    node_label_position = st.selectbox("node.labelPosition",options=['left','right','top','bottom','center'])
-    node_render_label = st.checkbox("node.renderLabel",value=True)
-    node_label_properity = st.text_input("node.labelProperty",value='id')
-    node_color = st.text_input("node.color",value='#ACDBC9')
-    node_stroke_color = st.text_input("node.strokeColor",value='#ACDBC9')
-    node_show_svg = st.checkbox("node.showSvg",value=True,help=' use the svg if svg link exists')
+with  st.sidebar.expander(lang_dict['Node Settings'],expanded=False): # expand default
+    node_label_position = st.selectbox(lang_dict["node.labelPosition"],options=['left','right','top','bottom','center'])
+    node_render_label = st.checkbox(lang_dict["node.renderLabel"],value=True)
+    node_show_svg = st.checkbox(lang_dict["node.showSvg"],value=True,help=' use the svg if svg link exists')
+    node_label_properity = st.text_input(lang_dict["node.labelProperty"],value='id')
+    node_color = st.color_picker(lang_dict["node.color"],value='#ACDBC9')
+    node_stroke_color = st.color_picker(lang_dict["node.strokeColor"],value='#ACDBC9')
     node_default = {
                     "id":"",
                     "size":250,
@@ -44,13 +50,13 @@ with  st.sidebar.expander('Node Settings',expanded=False): # expand default
                     }
     # print(node_default)
 
-with  st.sidebar.expander('Edge Settings',expanded=False): # expand default
-    directed =  st.selectbox("directed",options=["False","True"], help="if directed")
-    link_type = st.selectbox("link.type",options=['STRAIGHT','CURVE_SMOOTH','CURVE_FULL'])
-    link_render_label = st.checkbox("link.renderLabel",value=True)
-    link_color = st.text_input("node.color",value='#F7A7A6')
-    link_label_property = st.text_input("link.labelProperty",value='label')
-    link_default = {"color":"#F7A7A6",
+with  st.sidebar.expander(lang_dict['Edge Settings'],expanded=False): # expand default
+    directed =  st.selectbox(lang_dict["directed"],options=["False","True"], help="if directed")
+    link_type = st.selectbox(lang_dict["link.type"],options=['STRAIGHT','CURVE_SMOOTH','CURVE_FULL'])
+    link_label_property = st.text_input(lang_dict["link.labelProperty"],value='label')
+    link_render_label = st.checkbox(lang_dict["link.renderLabel"],value=True)
+    link_color = st.color_picker(lang_dict["node.color"],value='#F7A7A6')
+    link_default = {"color":link_color,
                     "type":link_type,
                     # "semanticStrokeWidth":False,
                     # "strokeWidth":1.5,
@@ -60,7 +66,7 @@ with  st.sidebar.expander('Edge Settings',expanded=False): # expand default
                     }
     
 
-with  st.sidebar.expander('React-D3-graph Settings'):
+with  st.sidebar.expander(lang_dict['React-D3-graph Settings']):
     alphaTarget = st.text_input("alphaTarget",value=0.05,
                                               help='he simulation “cools down”. When alpha reaches alphaTarget, the simulation stops;')
     gravity = st.text_input("gravity",value=-200,
@@ -79,8 +85,8 @@ with  st.sidebar.expander('React-D3-graph Settings'):
 
 
 
-st.sidebar.write("#### Upload your own data")
-uploaded_file = st.sidebar.file_uploader("the marvel data default")
+st.sidebar.write(f"#### {lang_dict['Upload your own data']}")
+uploaded_file = st.sidebar.file_uploader(lang_dict["the marvel data default"])
 if uploaded_file is None:
     # nodes,edges = extract_graph_data(node_default=node_default,link_default=link_default)
     nodes,edges = extract_graph_data()
@@ -94,20 +100,19 @@ else:
 
 graph_nodes = []
 for n in nodes.values():
-    print(set_node_value(n,node_default))
     graph_nodes.append(Node(**set_node_value(n,node_default)))
     
 graph_links = []
 for n in edges.values():
-    print(set_link_value(n,link_default))
     graph_links.append(Edge(**set_link_value(n,link_default)))
 
 
-downloader =  st.sidebar.expander('Download Sample Data')
+downloader =  st.sidebar.expander(lang_dict['Download Sample Data'])
 with open('./data/marvel.xlsx', 'rb') as f:
-# with open('marvel.xlsx', 'rb') as f:
-    downloader.download_button('Download', f, file_name='marvel.xlsx')
-downloader.write("Source cod: [Github](https://github.com/kevin-meng/graph_in_life)")
+    downloader.download_button(lang_dict['toy data'], f, file_name='simple.xlsx',kwargs={'fontSize':'5px'})
+    downloader.download_button(lang_dict['marvel data'], f, file_name='marvel.xlsx')
+downloader.write("Source code: [Github](https://github.com/kevin-meng/graph_in_life)")
+
 
 
 # config use https://danielcaldas.github.io/react-d3-graph/sandbox/index.html?data=marvel
@@ -128,7 +133,7 @@ config = Config(width=eval(width),
                 highlightColor="#F7A7A6", # or "blue"
                 collapsible=True,
                 # node={'labelProperty':node_label_properity,"renderLabel":node_render_label},
-                # link={'labelProperty': link_label_property, 'renderLabel': link_render_label, "type":link_type},
+                link={'labelProperty': link_label_property, 'renderLabel': link_render_label, "type":link_type},
                 initialZoom=1,
                 d3= d3_config,
                 # **kwargs e.g. node_size=1000 or node_color="blue"

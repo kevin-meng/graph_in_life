@@ -1,11 +1,6 @@
 import pickle
 import pandas as pd
 
-def load_pickle(dir):
-    with open(dir,'rb') as f:
-        out_file = pickle.load(f)
-    return out_file
-
 
 def set_node_value(d,node_default=None):
     """
@@ -27,8 +22,6 @@ def set_node_value(d,node_default=None):
     if not node_default['showSvg']:
         d['svg'] = ''
     return d
-
-
 
 def set_link_value(d,link_default=None):
     """
