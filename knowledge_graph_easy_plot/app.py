@@ -114,10 +114,11 @@ for n in edges.values():
 
 
 downloader =  st.sidebar.expander(lang_dict['Download Sample Data'])
+with open('./data/simple.xlsx', 'rb') as f:
+    downloader.download_button(lang_dict['toy data'], f, file_name='simple.xlsx')
+    
 with open('./data/marvel.xlsx', 'rb') as f:
-    downloader.download_button(lang_dict['toy data'], f, file_name='simple.xlsx',kwargs={'fontSize':'5px'})
     downloader.download_button(lang_dict['marvel data'], f, file_name='marvel.xlsx')
-
 downloader.write("Email: kevin_meng@yeah.net")
 downloader.write("Source code: [Github](https://github.com/kevin-meng/graph_in_life)")
 
