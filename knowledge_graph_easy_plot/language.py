@@ -29,5 +29,6 @@ chinese_dict = {
     'the marvel data default':'默认显示漫威数据',
     'toy data':'样例数据',
     'marvel data':'漫威数据',
+    'Donate':"赞赏 / Donate"
 }
 

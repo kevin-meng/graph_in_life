@@ -75,14 +75,20 @@ with  st.sidebar.expander(lang_dict['React-D3-graph Settings']):
                                       If value is positive, nodes will attract each other. 
                                       If value is negative, nodes will repel each other. Most of the times this is what we want, so nodes don"t overlap.'
                                       """)
-    linkLength = st.text_input("linkLength",value=50,
+    linkLength = st.text_input("linkLength",value=100,
                                  help = 'the length of each link from the center of the nodes it joins.')
-    linkStrength = st.text_input("linkStrength",value=0.2,
+    linkStrength = st.text_input("linkStrength",value=1,
                                  help='Overlapping nodes are resolved through iterative relaxation. ')
     disableLinkForce = st.selectbox("disableLinkForce",options=["False","True"],
                                                       help="Completely disables d3 force link and simulation to re-trigger so that one can obtain precise render of node positions ")
     st.write('More infomation:[docs](https://danielcaldas.github.io/react-d3-graph/docs/index.html)')
-
+    d3_config = {
+            "alphaTarget": eval(alphaTarget),
+            "gravity": eval(gravity), #  -250,
+            "linkLength": eval(linkLength),
+            "linkStrength": eval(linkStrength),
+            "disableLinkForce": eval(disableLinkForce)
+        }
 
 
 st.sidebar.write(f"#### {lang_dict['Upload your own data']}")
@@ -111,19 +117,15 @@ downloader =  st.sidebar.expander(lang_dict['Download Sample Data'])
 with open('./data/marvel.xlsx', 'rb') as f:
     downloader.download_button(lang_dict['toy data'], f, file_name='simple.xlsx',kwargs={'fontSize':'5px'})
     downloader.download_button(lang_dict['marvel data'], f, file_name='marvel.xlsx')
+
+downloader.write("Email: kevin_meng@yeah.net")
 downloader.write("Source code: [Github](https://github.com/kevin-meng/graph_in_life)")
 
 
 
 # config use https://danielcaldas.github.io/react-d3-graph/sandbox/index.html?data=marvel
 # https://danielcaldas.github.io/react-d3-graph/docs/2.1.0.html#config-d3
-d3_config = {
-    "alphaTarget": eval(alphaTarget),
-    "gravity": eval(gravity), #  -250,
-    "linkLength": eval(linkLength),
-    "linkStrength": eval(linkStrength),
-    "disableLinkForce": eval(disableLinkForce)
-  }
+
 
 
 config = Config(width=eval(width), 
@@ -147,7 +149,7 @@ config = Config(width=eval(width),
 return_value = agraph(nodes=graph_nodes, 
                       edges=graph_links, 
                       config=config)
-st.sidebar.write(f"#### 赞赏 / Donate")
+st.sidebar.write(f"#### {lang_dict['Donate']}")
 image_donate = Image.open("./data/donate.jpeg")
 st.sidebar.image(image_donate,caption="",use_column_width='always')
 st.markdown("---")
